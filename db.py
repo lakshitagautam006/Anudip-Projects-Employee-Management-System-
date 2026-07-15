@@ -11,13 +11,12 @@ def connect_db():
         port="5432"
     )
 
-
 def view_employees():
     try:
         connection = connect_db()
         cursor = connection.cursor()
 
-        cursor.execute("""
+        query = """
         SELECT
             e.employee_id,
             e.name,
@@ -32,13 +31,16 @@ def view_employees():
         FROM employees e
         JOIN departments d
         ON e.department_id = d.department_id
-        """)
+        """
+
+        cursor.execute(query)
         employees = cursor.fetchall()
 
         print("\n===== Employee Records =====\n")
 
         if len(employees) == 0:
             print("No employees found.")
+
         else:
             for row in employees:
                 emp = Employee(
@@ -68,6 +70,7 @@ def add_employee():
         cursor = connection.cursor()
 
         print("\n===== Add Employee =====")
+
         view_departments()
 
         name = input("Enter Name: ")
@@ -83,7 +86,7 @@ def add_employee():
         query = """
         INSERT INTO employees
         (name, age, gender, phone, email, designation, salary, joining_date, department_id)
-        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
 
         values = (
@@ -135,7 +138,6 @@ def search_employee():
         """
 
         cursor.execute(query, (employee_id,))
-
         row = cursor.fetchone()
 
         if row:
@@ -185,7 +187,7 @@ def update_employee():
             connection.close()
             return
 
-        print("\nEnter New Employee Details")
+        print("\n===== Update Employee =====")
         view_departments()
 
         name = input("Enter Name: ")
@@ -275,12 +277,13 @@ def view_departments():
         connection = connect_db()
         cursor = connection.cursor()
 
-        cursor.execute("""
+        query = """
         SELECT department_id, department_name
         FROM departments
         ORDER BY department_id
-        """)
+        """
 
+        cursor.execute(query)
         departments = cursor.fetchall()
 
         print("\nAvailable Departments")
@@ -290,45 +293,6 @@ def view_departments():
             print(f"{department[0]}. {department[1]}")
 
         print("-" * 30)
-
-        cursor.close()
-        connection.close()
-
-    except Exception as e:
-        print("Error:", e)
-
-def dashboard():
-    try:
-        connection = connect_db()
-        cursor = connection.cursor()
-
-        # Total Employees
-        cursor.execute("SELECT COUNT(*) FROM employees")
-        total_employees = cursor.fetchone()[0]
-
-        # Total Departments
-        cursor.execute("SELECT COUNT(*) FROM departments")
-        total_departments = cursor.fetchone()[0]
-
-        # Highest Salary
-        cursor.execute("SELECT MAX(salary) FROM employees")
-        highest_salary = cursor.fetchone()[0]
-
-        # Lowest Salary
-        cursor.execute("SELECT MIN(salary) FROM employees")
-        lowest_salary = cursor.fetchone()[0]
-
-        # Average Salary
-        cursor.execute("SELECT AVG(salary) FROM employees")
-        average_salary = cursor.fetchone()[0]
-
-        print("\n========== Dashboard ==========")
-        print(f"Total Employees   : {total_employees}")
-        print(f"Total Departments : {total_departments}")
-        print(f"Highest Salary    : ₹{highest_salary}")
-        print(f"Lowest Salary     : ₹{lowest_salary}")
-        print(f"Average Salary    : ₹{average_salary:.2f}")
-        print("=" * 31)
 
         cursor.close()
         connection.close()

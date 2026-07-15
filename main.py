@@ -3,8 +3,7 @@ from db import (
     view_employees,
     search_employee,
     update_employee,
-    delete_employee,
-    dashboard
+    delete_employee
 )
 
 while True:
@@ -14,8 +13,7 @@ while True:
     print("3. Search Employee")
     print("4. Update Employee")
     print("5. Delete Employee")
-    print("6. Dashboard")
-    print("7. Exit")
+    print("6. Exit")
 
     choice = input("\nEnter your choice: ")
 
@@ -35,9 +33,6 @@ while True:
         delete_employee()
 
     elif choice == "6":
-        dashboard()
-
-    elif choice == "7":
         print("Thank you for using Employee Management System!")
         break
 
