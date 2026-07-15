@@ -1,11 +1,24 @@
-class Employee:
-    def __init__(self, employee_id, name, age, gender, phone,
-             email, designation, salary, joining_date, department):
+from person import Person
+
+
+class Employee(Person):
+
+    def __init__(
+        self,
+        employee_id,
+        name,
+        age,
+        gender,
+        phone,
+        email,
+        designation,
+        salary,
+        joining_date,
+        department
+    ):
+        super().__init__(name, age, gender)
 
         self.employee_id = employee_id
-        self.name = name
-        self.age = age
-        self.gender = gender
         self.phone = phone
         self.email = email
         self.designation = designation
@@ -16,9 +29,9 @@ class Employee:
     def display(self):
         print("-" * 40)
         print(f"Employee ID   : {self.employee_id}")
-        print(f"Name          : {self.name}")
-        print(f"Age           : {self.age}")
-        print(f"Gender        : {self.gender}")
+        print(f"Name          : {self._name}")
+        print(f"Age           : {self._age}")
+        print(f"Gender        : {self._gender}")
         print(f"Phone         : {self.phone}")
         print(f"Email         : {self.email}")
         print(f"Designation   : {self.designation}")

@@ -1,14 +1,17 @@
 import psycopg2
+import os
+from dotenv import load_dotenv
 from employee import Employee
 
+load_dotenv()
 
 def connect_db():
     return psycopg2.connect(
-        host="localhost",
-        database="employee_db",
-        user="postgres",
-        password="12345",
-        port="5432"
+        host=os.getenv("DB_HOST"),
+        database=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        port=os.getenv("DB_PORT")
     )
 
 def view_employees():
@@ -80,7 +83,10 @@ def add_employee():
         email = input("Enter Email: ")
         designation = input("Enter Designation: ")
         salary = float(input("Enter Salary: "))
-        joining_date = input("Enter Joining Date (YYYY-MM-DD): ")
+        from datetime import datetime
+
+        joining_date = input("Enter Joining Date (DD-MM-YYYY): ")
+        joining_date = datetime.strptime(joining_date, "%d-%m-%Y").strftime("%Y-%m-%d")
         department_id = int(input("Enter Department ID: "))
 
         query = """
@@ -197,7 +203,10 @@ def update_employee():
         email = input("Enter Email: ")
         designation = input("Enter Designation: ")
         salary = float(input("Enter Salary: "))
-        joining_date = input("Enter Joining Date (YYYY-MM-DD): ")
+        from datetime import datetime
+
+        joining_date = input("Enter Joining Date (DD-MM-YYYY): ")
+        joining_date = datetime.strptime(joining_date, "%d-%m-%Y").strftime("%Y-%m-%d")
         department_id = int(input("Enter Department ID: "))
 
         query = """
