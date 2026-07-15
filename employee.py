@@ -1,6 +1,6 @@
 class Employee:
     def __init__(self, employee_id, name, age, gender, phone,
-                 email, designation, salary, joining_date, department_id):
+             email, designation, salary, joining_date, department):
 
         self.employee_id = employee_id
         self.name = name
@@ -11,7 +11,7 @@ class Employee:
         self.designation = designation
         self.salary = salary
         self.joining_date = joining_date
-        self.department_id = department_id
+        self.department = department
 
     def display(self):
         print("-" * 40)
@@ -24,5 +24,5 @@ class Employee:
         print(f"Designation   : {self.designation}")
         print(f"Salary        : ₹{self.salary}")
         print(f"Joining Date  : {self.joining_date}")
-        print(f"Department ID : {self.department_id}")
+        print(f"Department    : {self.department}")
         print("-" * 40)
