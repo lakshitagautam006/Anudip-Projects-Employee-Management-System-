@@ -2,6 +2,7 @@ import psycopg2
 import os
 from dotenv import load_dotenv
 from employee import Employee
+from datetime import datetime
 
 load_dotenv()
 
@@ -13,6 +14,29 @@ def connect_db():
         password=os.getenv("DB_PASSWORD"),
         port=os.getenv("DB_PORT")
     )
+def get_valid_name():
+    while True:
+        name = input("Enter Name: ").strip()
+
+        if name == "":
+            print("Name cannot be empty.")
+        elif not name.replace(" ", "").isalpha():
+            print("Name should contain only alphabets.")
+        else:
+            return name
+        
+def get_valid_age():
+    while True:
+        try:
+            age = int(input("Enter Age: "))
+
+            if 18 <= age <= 65:
+                return age
+            else:
+                print("Age must be between 18 and 65.")
+
+        except ValueError:
+            print("Please enter a valid number.")
 
 def view_employees():
     try:
@@ -76,14 +100,21 @@ def add_employee():
 
         view_departments()
 
-        name = input("Enter Name: ")
-        age = int(input("Enter Age: "))
-        gender = input("Enter Gender: ")
+        name = get_valid_name()
+        age = get_valid_age()
+        gender = input("Enter Gender (Male/Female/Other): ").capitalize()
+
+        if gender not in ["Male", "Female", "Other"]:
+           raise ValueError("Gender must be Male, Female, or Other.")
         phone = input("Enter Phone: ")
-        email = input("Enter Email: ")
+
+        if not (phone.isdigit() and len(phone) == 10):
+           raise ValueError("Phone number must contain exactly 10 digits.")
+        email = input("Enter Email: ").strip()
+        if "@" not in email or "." not in email:
+            raise ValueError("Invalid email format.")
         designation = input("Enter Designation: ")
         salary = float(input("Enter Salary: "))
-        from datetime import datetime
 
         joining_date = input("Enter Joining Date (DD-MM-YYYY): ")
         joining_date = datetime.strptime(joining_date, "%d-%m-%Y").strftime("%Y-%m-%d")
@@ -196,14 +227,21 @@ def update_employee():
         print("\n===== Update Employee =====")
         view_departments()
 
-        name = input("Enter Name: ")
-        age = int(input("Enter Age: "))
-        gender = input("Enter Gender: ")
+        name = get_valid_name()
+        age = get_valid_age()
+        gender = input("Enter Gender (Male/Female/Other): ").capitalize()
+
+        if gender not in ["Male", "Female", "Other"]:
+           raise ValueError("Gender must be Male, Female, or Other.")
         phone = input("Enter Phone: ")
-        email = input("Enter Email: ")
+
+        if not (phone.isdigit() and len(phone) == 10):
+           raise ValueError("Phone number must contain exactly 10 digits.")
+        email = input("Enter Email: ").strip()
+        if "@" not in email or "." not in email:
+            raise ValueError("Invalid email format.")
         designation = input("Enter Designation: ")
         salary = float(input("Enter Salary: "))
-        from datetime import datetime
 
         joining_date = input("Enter Joining Date (DD-MM-YYYY): ")
         joining_date = datetime.strptime(joining_date, "%d-%m-%Y").strftime("%Y-%m-%d")
